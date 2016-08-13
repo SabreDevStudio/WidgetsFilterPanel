@@ -7,6 +7,6 @@
     module.exports = factory();
   } else {
     // Browser Global
-    window.SomeWidgets = factory();
+    window.WidgetsFilterPanel = factory();
   }
 }(this, function() {

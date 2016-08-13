@@ -41,7 +41,7 @@ module.exports = function (grunt) {
       },
       cssbundle: {
         files: {
-          'dist/css/SomeWidgets.min.css': [
+          'dist/css/WidgetsFilterPanel.min.css': [
             'bower_components/bootstrap/dist/css/bootstrap.css',
             'tmp/styles/**/*.css'
           ]
@@ -72,7 +72,7 @@ module.exports = function (grunt) {
     },
 
     ngtemplates: {
-      'SomeWidgets.templates': {
+      'WidgetsFilterPanel.templates': {
         cwd: 'tmp',
         src: '../app/src/**/*.tpl.html',
         dest: 'tmp/ngtemplates/templates.mod.js',
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
           // See: https://github.com/requirejs/almond/issues/12:
           // jrburke: this is tricky because jquery loads before the define API exists in the page. What you could do is create a special adapter module that you use for 'jquery' in the paths config for the build (instead of the 'empty:') that looks like this:
           config.paths.angular="global.Angular.AMD.adapter";
-          config.out = "dist/SomeWidgets.js";
+          config.out = "dist/WidgetsFilterPanel.js";
           return config;
         })()
       }

@@ -1,7 +1,7 @@
 {
   "name": "../../node_modules/almond/almond",
   "mainConfigFile": "app/src/main.js",
-  "out": "dist/SomeWidgets.min.js",
+  "out": "dist/WidgetsFilterPanel.min.js",
   "paths": {
     "templates.mod": "../../tmp/ngtemplates/templates.mod"
   },
