@@ -1,0 +1,49 @@
+{
+  "name": "SomeWidgets",
+  "version": "0.0.1",
+  "authors": [
+    "Tomasz Szymanski <Tomasz.Szymanski@sabre.com>"
+  ],
+  "main": [
+    "dist/SomeWidgets.js",
+    "dist/SomeWidgets.min.js",
+    "dist/css/SomeWidgets.min.css"
+  ],
+  "description": "",
+  "ignore": [
+    "**/.*",
+    "app",
+    "demo-www",
+    "Gruntfile.js",
+    "index.html",
+    "package.json",
+    "r.compiler.options.json",
+    "requirejs.wrap.start",
+    "requirejs.wrap.end"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "Some widgets"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.3.x",
+    "lodash": "4.14.x",
+    "angular-resource": "1.3.16",
+    "angular-bootstrap": "~0.13.4",
+    "bootstrap": "~3.3.5",
+    "angular-sanitize": "1.3.16",
+    "iso-currency": "~0.2.7",
+    "ngstorage": "~0.3.7",
+    "angular-touch": "1.3.16",
+    "nsPopover": "~0.6.8",
+    "css-element-queries": "https://github.com/TomekSzymanski/css-element-queries.git#ae9109f3014d53a06c467621e18192e151bd483f",
+    "moment": "~2.14.1"
+  },
+  "resolutions": {
+    "angular": "1.3.x"
+  }
+}

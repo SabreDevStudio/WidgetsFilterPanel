@@ -1,0 +1,37 @@
+{
+  "name": "../../node_modules/almond/almond",
+  "mainConfigFile": "app/src/main.js",
+  "out": "dist/SomeWidgets.min.js",
+  "paths": {
+    "templates.mod": "../../tmp/ngtemplates/templates.mod"
+  },
+  "include": ["main"],
+  "insertRequire": ["main"],
+  "wrap": {
+    "startFile": "requirejs.wrap.start",
+    "endFile": "requirejs.wrap.end"
+  },
+  "mangle": true,
+  "optimize": "uglify2",
+  "uglify2": {
+    "compress": {
+      "screw_ie8": true,
+      "sequences": true,
+      "properties": true,
+      "dead_code": true,
+      "drop_debugger": true,
+      "comparisons": true,
+      "conditionals": true,
+      "evaluate": true,
+      "booleans": true,
+      "loops": true,
+      "unused": true,
+      "hoist_funs": true,
+      "if_return": true,
+      "join_vars": true,
+      "cascade": true,
+      "negate_iife": true,
+      "drop_console": true
+    }
+  }
+}

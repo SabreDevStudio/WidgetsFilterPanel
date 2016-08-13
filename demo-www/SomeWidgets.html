@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SomeWidgets</title>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../dist/css/SomeWidgets.min.css">
+
+    <!-- Development -->
+    <script data-main="../app/src/main" src="../node_modules/requirejs/require.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.js"></script>
+    <script src="sampleApp.js"></script>
+    <!-- Development ends-->
+
+    <!--&lt;!&ndash; production &ndash;&gt;-->
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.js"></script>-->
+    <!--<script src="../dist/SomeWidgets.min.js"></script>-->
+    <!--<script src="sampleApp.js"></script>-->
+    <!--&lt;!&ndash; production ends &ndash;&gt;-->
+
+</head>
+<body>
+
+<div class="container-fluid" ng-app="sampleApp" ng-controller="sampleAppCtrl">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <submodule1-directive></submodule1-directive>
+        </div>
+    </div>
+</div>
+</body>
+</html>
