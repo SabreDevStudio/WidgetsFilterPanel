@@ -23741,8 +23741,7 @@ define('filterPanel/filterPanel.ctr',[
                     };
 
                     $scope.isAnyDataToDisplayAvailable = function () {
-                        return true; //TODO
-                        //return anyStatisticsToCreateFiltersSent;
+                        return anyStatisticsToCreateFiltersSent;
                     };
                 }
     });
@@ -28830,7 +28829,7 @@ define('filterModel/DiscreteValuesListFilter',[
             return function (element) {
                 var elementValuesList = _.result(element, filterablePropertyName);
                 return elementValuesList.every(function (elementValue) {
-                    return _.contains(permittedPropertyValues, elementValue);
+                    return _.includes(permittedPropertyValues, elementValue);
                 });
             };
         };
@@ -29372,32 +29371,34 @@ define('statistics/StatisticsCalculator',[
          * @returns {*}
          */
         StatisticsCalculator.prototype.getMinValue = function (modelObjectArray, propertyName, propertyFieldToCompareOn) {
-            var currentMin = Infinity;
-            modelObjectArray.forEach(function (element) {
-                var elementValue = element[propertyName][propertyFieldToCompareOn];
-                if (elementValue < currentMin) {
-                    currentMin = elementValue;
+            var currentMinValue = Infinity;
+            var currentMin = modelObjectArray[0];
+            modelObjectArray.forEach(function (itin) {
+                var element = _.result(itin, propertyName);
+                var elementValue = (_.isUndefined(propertyFieldToCompareOn))? element : element[propertyFieldToCompareOn];
+                if (elementValue < currentMinValue) {
+                    currentMinValue = elementValue;
+                    currentMin = element;
                 }
             });
-            var retObj = {};
-            retObj[propertyFieldToCompareOn] = currentMin;
-            return retObj;
+            return currentMin;
         };
 
         /**
          * See getMinValue
          */
         StatisticsCalculator.prototype.getMaxValue = function (modelObjectArray, propertyName, propertyFieldToCompareOn) {
-            var currentMax = -Infinity;
-            modelObjectArray.forEach(function (element) {
-                var elementValue = element[propertyName][propertyFieldToCompareOn];
-                if (elementValue > currentMax) {
-                    currentMax = elementValue;
+            var currentMaxValue = -Infinity;
+            var currentMax = modelObjectArray[0];
+            modelObjectArray.forEach(function (itin) {
+                var element = _.result(itin, propertyName);
+                var elementValue = (_.isUndefined(propertyFieldToCompareOn))? element : element[propertyFieldToCompareOn];
+                if (elementValue > currentMaxValue) {
+                    currentMaxValue = elementValue;
+                    currentMax = element;
                 }
             });
-            var retObj = {};
-            retObj[propertyFieldToCompareOn] = currentMax;
-            return retObj;
+            return currentMax;
         };
 
         /**

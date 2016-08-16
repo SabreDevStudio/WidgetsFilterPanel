@@ -19,7 +19,7 @@ define([
             return function (element) {
                 var elementValuesList = _.result(element, filterablePropertyName);
                 return elementValuesList.every(function (elementValue) {
-                    return _.contains(permittedPropertyValues, elementValue);
+                    return _.includes(permittedPropertyValues, elementValue);
                 });
             };
         };
