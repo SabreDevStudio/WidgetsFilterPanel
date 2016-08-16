@@ -7,9 +7,9 @@ define([
         'use strict';
 
         return function(
-                    $scope
-                    , FilteringCriteriaChangedBroadcastingService
-                    , resetAllFiltersEvent
+                    $scope,
+                    FilteringCriteriaChangedNotificationService,
+                    resetAllFiltersEvent
                 ) {
 
                     // stores all current filtering function, as a mapping of unique filterId to its filtering function
@@ -25,8 +25,12 @@ define([
 
                     this.updateFilteringFunction = function (filterId, newFilteringFunction) {
                         currentFilteringFunctions[filterId] = newFilteringFunction;
-                        FilteringCriteriaChangedBroadcastingService.filteringFunctions = _.values(currentFilteringFunctions);
-                        FilteringCriteriaChangedBroadcastingService.broadcast();
+                        var aggregateFilteringFn = function (modelObj) {
+                            return _.values(currentFilteringFunctions).every(function (filteringFn) {
+                                return filteringFn(modelObj)
+                            });
+                        };
+                        FilteringCriteriaChangedNotificationService.notify(aggregateFilteringFn);
                     };
 
                     $scope.resetAllFilters = function () {

@@ -16,7 +16,7 @@
                     <label class="SDSDiscreteFilterValueLabel" for="{{::i.filterablePropertyName}}_{{i.propertyValue}}">
                         <input type="checkbox" id="{{::i.filterablePropertyName}}_{{i.propertyValue}}" checked="checked" ng-model="i.permitted" ng-change="permittedValuesChanged()">
                             <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span>
-                        <span class="pull-right">{{i.minPrice | isoCurrency:i.currency:0}}</span>
+                        <span class="pull-right">{{i.minPrice | currency:i.currency:0}}</span>
                     </label>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         {{filterInstance.minConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}}
                     </span>
                     <span ng-if="filterType === 'rangeMonetaryAmount'">
-                        {{filterInstance.minConstraint.amount | isoCurrency:filterInstance.minConstraint.currency}}
+                        {{filterInstance.minConstraint.amount | currency:filterInstance.minConstraint.currency}}
                     </span>
                 </span>
                 <span class="pull-right">
@@ -44,7 +44,7 @@
                         {{filterInstance.maxConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}}
                     </span>
                     <span ng-if="filterType === 'rangeMonetaryAmount'">
-                        {{filterInstance.maxConstraint.amount | isoCurrency:filterInstance.maxConstraint.currency}}
+                        {{filterInstance.maxConstraint.amount | currency:filterInstance.maxConstraint.currency}}
                     </span>
                 </span>
                 <div ng-if="filterType === 'range' || filterType === 'rangeDateTime'"

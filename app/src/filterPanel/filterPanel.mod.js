@@ -1,20 +1,29 @@
 define([
         'angular',
         'angular_bootstrap',
+        'angular_rangeslider',
+        'messaging/messaging.mod',
         'filterPanel/filterPanel.ctr',
         'filterPanel/filterPanel.drv',
-        'filterPanel/valuesFilter.drv'
+        'filterPanel/valuesFilter.drv',
+        'filterPanel/applyFilter.ftr'
     ],
     function (
         angular,
         angular_bootstrap,
+        angular_rangeslider,
+        MessagingModule,
         FiltersPanelCtrl,
         FiltersPanelDirective,
-        ValuesFilterDirective
+        ValuesFilterDirective,
+        applyFilterFilter
 ) {
         'use strict';
 
-        return angular.module('WidgetsFilterPanel.filterPanel', [])
+        return angular.module('WidgetsFilterPanel.filterPanel', [
+            'WidgetsFilterPanel.messaging',
+            'ui-rangeSlider'
+        ])
             .service('FilterIdGeneratorService', function () {
                 var seqNumber = 0;
                 return {
@@ -25,15 +34,16 @@ define([
             })
             .controller('FiltersPanelCtrl', [
                 '$scope',
-                'FilteringCriteriaChangedBroadcastingService',
+                'FilteringCriteriaChangedNotificationService',
                 'resetAllFiltersEvent',
                 FiltersPanelCtrl
             ])
+            .filter('applyFilter', ['$filter', applyFilterFilter])
             .directive('filterPanel', FiltersPanelDirective)
             .directive('valuesFilter', [
                 'StatisticsGatheringRequestsRegistryService',
-                'itinerariesStatisticsUpdateNotification',
-                'ItineraryStatisticsBroadcastingService',
+                'statisticsUpdateNotification',
+                'StatisticsBroadcastingService',
                 'FilterIdGeneratorService',
                 'resetAllFiltersEvent',
                 ValuesFilterDirective])

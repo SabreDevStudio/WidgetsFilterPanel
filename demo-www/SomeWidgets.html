@@ -7,29 +7,41 @@
     <title>WidgetsFilterPanel</title>
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../dist/css/WidgetsFilterPanel.min.css">
-
-    <!-- Development -->
-    <script data-main="../app/src/main" src="../node_modules/requirejs/require.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.js"></script>
     <script src="sampleApp.js"></script>
+
+    <!-- Development -->
+    <script src="../node_modules/requirejs/require.js" data-main="sampleAppAMDLoader"></script>
     <!-- Development ends-->
 
     <!--&lt;!&ndash; production &ndash;&gt;-->
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.js"></script>-->
     <!--<script src="../dist/WidgetsFilterPanel.min.js"></script>-->
-    <!--<script src="sampleApp.js"></script>-->
+    <!--<script type="text/javascript">-->
+        <!--sampleApp();-->
+    <!--</script>-->
     <!--&lt;!&ndash; production ends &ndash;&gt;-->
 
 </head>
 <body>
 
-<div class="container-fluid" ng-app="sampleApp" ng-controller="sampleAppCtrl">
+<div class="container-fluid" ng-controller="sampleAppCtrl">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-4">
+            <ul>
+                <li ng-repeat="item in filteredItems">
+                    Item {{$index}} price: {{item.price.amount | currency: item.price.currency}} stops: {{item.numberOfStops}}
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            Filters:
             <filter-panel>
+                <values-filter type="discrete" label="Number of stops" filterable-property-name="numberOfStops" values-display-filter="humanizeNumberOfStops"></values-filter>
 
+                <values-filter type="rangeMonetaryAmount" label="Price" filterable-property-name="price" can-filter-only-on-max-value="true"></values-filter>
             </filter-panel>
         </div>
+
     </div>
 </div>
 </body>

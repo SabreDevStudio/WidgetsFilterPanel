@@ -43,6 +43,7 @@ module.exports = function (grunt) {
         files: {
           'dist/css/WidgetsFilterPanel.min.css': [
             'bower_components/bootstrap/dist/css/bootstrap.css',
+            'bower_components/angular-rangeslider/angular.rangeSlider.css',
             'tmp/styles/**/*.css'
           ]
         }

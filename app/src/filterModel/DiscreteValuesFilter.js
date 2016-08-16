@@ -39,7 +39,7 @@ define([
         };
 
         DiscreteValuesFilter.prototype.rebuildFilteringFunction = function () {
-            var permittedPropertyValues = _.pluck(_.filter(this.selectableValues, 'permitted'), 'propertyValue');
+            var permittedPropertyValues = _.map(_.filter(this.selectableValues, 'permitted'), 'propertyValue');
             this.filteringFunction = this.filteringFunctionConstructor(this.filterablePropertyName, permittedPropertyValues);
             return this.filteringFunction;
         };

@@ -22,8 +22,8 @@ define([
 
     return function (
         StatisticsGatheringRequestsRegistryService,
-        itinerariesStatisticsUpdateNotification,
-        ItineraryStatisticsBroadcastingService,
+        statisticsUpdateNotification,
+        StatisticsBroadcastingService,
         FilterIdGeneratorService,
         resetAllFiltersEvent
     ) {
@@ -69,15 +69,21 @@ define([
                     , type: scope.filterInstance.getRequestedStatisticsType()
                 });
 
-                scope.$on(itinerariesStatisticsUpdateNotification, function () {
+                scope.$on(statisticsUpdateNotification, function () {
                     filtersPanelController.notifyOnStatisticsUpdate();
-                    var statistics = ItineraryStatisticsBroadcastingService.statistics;
+                    var statistics = StatisticsBroadcastingService.statistics;
                     scope.filterInstance.applyStatistics(statistics);
+                    // need to kick angular as in values filter view we are ngShow on AbstractFilter.filterInitialized. Angular does not see change in this boolean value.
+                    scope.$evalAsync();
                 });
 
                 scope.permittedValuesChanged = function () {
                     var newFilteringFunction = scope.filterInstance.rebuildFilteringFunction();
                     filtersPanelController.updateFilteringFunction(scope.filterInstance.filterId, newFilteringFunction);
+                    // We need to call the digest cycle manually, as we changed the model outside of Angular (we have read the state of filters UI controls (sliders), sent new filtering functions thru event and applied to the itineraries domain model).
+                    // In case of discrete filters (checkboxes), the digest cycle is already triggered by Angular (checkboxes with ng-model), while range sliders are component totally outside of Angular: that is why we have to call digest after change from these components.
+                    // It is evalAsync, not just digest(), because in case of discrete values filters, the digest cycle is already in progress.
+                    scope.$evalAsync();
                 };
 
                 scope.$on(resetAllFiltersEvent, function () {
