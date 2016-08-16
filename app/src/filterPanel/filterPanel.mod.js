@@ -39,6 +39,11 @@ define([
                 FiltersPanelCtrl
             ])
             .filter('applyFilter', ['$filter', applyFilterFilter])
+            .filter('passAllFilter', function () {
+                return function (input) {
+                    return input;
+                };
+            })
             .directive('filterPanel', FiltersPanelDirective)
             .directive('valuesFilter', [
                 'StatisticsGatheringRequestsRegistryService',
