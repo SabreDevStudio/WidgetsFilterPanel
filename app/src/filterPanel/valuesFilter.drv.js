@@ -68,6 +68,7 @@ define([
                 scope.valuesDisplayFilter = attrs.valuesDisplayFilter;
                 scope.valuesDisplayFilterOptions = attrs.valuesDisplayFilterOptions;
                 scope.hidePriceFrom = (attrs.hidePriceFrom === 'true');
+                scope.currencyFilter = attrs.customCurrencyFilter || 'currency';
 
                 StatisticsGatheringRequestsRegistryService.register({
                       property: scope.filterInstance.getFilterablePropertyName()

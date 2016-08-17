@@ -16,7 +16,7 @@
                     <label class="SDSDiscreteFilterValueLabel" for="{{::i.filterablePropertyName}}_{{i.propertyValue}}">
                         <input type="checkbox" id="{{::i.filterablePropertyName}}_{{i.propertyValue}}" checked="checked" ng-model="i.permitted" ng-change="permittedValuesChanged()">
                             <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span>
-                        <span class="pull-right" ng-hide="hidePriceFrom">{{i.minPrice | currency:i.currency:0}}</span>
+                        <span class="pull-right" ng-hide="hidePriceFrom">{{i.minPrice | applyFilter:currencyFilter:i.currency:0}}</span>
                     </label>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         {{filterInstance.minConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}}
                     </span>
                     <span ng-if="filterType === 'rangeMonetaryAmount'">
-                        {{filterInstance.minConstraint.amount | currency:filterInstance.minConstraint.currency}}
+                        {{filterInstance.minConstraint.amount | applyFilter:currencyFilter:filterInstance.minConstraint.currency}}
                     </span>
                 </span>
                 <span class="pull-right">
@@ -44,7 +44,7 @@
                         {{filterInstance.maxConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}}
                     </span>
                     <span ng-if="filterType === 'rangeMonetaryAmount'">
-                        {{filterInstance.maxConstraint.amount | currency:filterInstance.maxConstraint.currency}}
+                        {{filterInstance.maxConstraint.amount | applyFilter:currencyFilter:filterInstance.maxConstraint.currency}}
                     </span>
                 </span>
                 <div ng-if="filterType === 'range' || filterType === 'rangeDateTime'"
@@ -59,7 +59,7 @@
                      min="filterInstance.minConstraint.amount" max="filterInstance.maxConstraint.amount"
                      model-min="filterInstance.min.amount" model-max="filterInstance.max.amount"
                      prevent-equal-min-max="true" show-values="true" attach-handle-values="true" ng-attr-pin-handle="{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}"
-                     filter="currency" filter-options="{{filterInstance.minConstraint.currency}}"
+                     filter="{{currencyFilter}}" filter-options="{{filterInstance.minConstraint.currency}}"
                      decimal-places="2"
                      on-handle-up="permittedValuesChanged()"></div>
                      <!-- WARN: decimal-places="2": this hardcode is good for most currencies. When not set then by default it is 0, and when max handle of price range slider is moved to left and then back to the top right (should be no constraint), then the max price is set rounded to integer number. Because of that the price like 455.01 will not pass as handle is set to 455 -->

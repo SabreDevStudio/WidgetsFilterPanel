@@ -54,6 +54,11 @@ function sampleApp() {
                 return stops + " stops";
             }
         })
+        .filter('someCustomCurrencyFilter', function () {
+            return function (amount, currency) {
+                return amount + ' ' + '$';
+            }
+        })
 
     angular.element(document).ready(function () {
         angular.bootstrap(document, ['sampleApp'], {

@@ -36,9 +36,21 @@
         <div class="col-md-3">
             Filters:
             <filter-panel>
-                <values-filter type="discrete" label="Number of stops" filterable-property-name="numberOfStops" values-display-filter="humanizeNumberOfStops"></values-filter>
 
-                <values-filter type="rangeMonetaryAmount" label="Price" filterable-property-name="price" can-filter-only-on-max-value="true"></values-filter>
+                <values-filter type="discrete"
+                               label="Number of stops"
+                               filterable-property-name="numberOfStops"
+                               values-display-filter="humanizeNumberOfStops"
+                               custom-currency-filter="someCustomCurrencyFilter">
+                </values-filter>
+
+                <values-filter type="rangeMonetaryAmount"
+                               label="Price"
+                               filterable-property-name="price"
+                               can-filter-only-on-max-value="true"
+                               custom-currency-filter="someCustomCurrencyFilter">
+                </values-filter>
+
             </filter-panel>
         </div>
 
