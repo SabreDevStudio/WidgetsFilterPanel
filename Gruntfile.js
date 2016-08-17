@@ -19,7 +19,7 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc'
       },
       all: {
-        src: ['app/src/**/*.js']
+        src: ['app/src/**/*.js', 'app/src-test/**/*.js']
       }
     },
 
@@ -100,6 +100,15 @@ module.exports = function (grunt) {
       }
     },
 
+    karma: {
+      'unit-Chrome': {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        browsers: ['Chrome'],
+        logLevel: 'ERROR'
+      }
+    },
+
     requirejs: {
       'compile': {
         options: (function () {
@@ -130,6 +139,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist', [
     'clean:dist',
     'sources-pipeline',
+    'unit-test',
     'static-resources',
     'requirejs:compile',
     'css-pipeline'
@@ -138,6 +148,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-no-uglify', [
     'clean:dist',
     'sources-pipeline',
+    'unit-test',
     'static-resources',
     'requirejs:compile-no-uglify',
     'css-pipeline'
@@ -146,11 +157,14 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-all', [
     'clean:dist',
     'sources-pipeline',
+    'unit-test',
     'static-resources',
     'requirejs:compile',
     'requirejs:compile-no-uglify',
     'css-pipeline'
   ]);
+
+  grunt.registerTask('unit-test', 'karma:unit-Chrome');
 
   grunt.registerTask('sources-pipeline', ['jshint', 'ngtemplates']);
 
