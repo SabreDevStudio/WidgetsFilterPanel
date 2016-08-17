@@ -2,7 +2,8 @@ define([
     'lodash',
     'moment',
     'filterModel/DiscreteValuesFilter',
-    'filterModel/DiscreteValuesListFilter',
+    'filterModel/DiscreteValuesListAllRequiredFilter',
+    'filterModel/DiscreteValuesListAnyRequiredFilter',
     'filterModel/RangeFilter',
     'filterModel/RangeDateTimeFilter',
     'filterModel/RangeMonetaryAmountFilter',
@@ -12,7 +13,8 @@ define([
     _,
     moment,
     DiscreteValuesFilter,
-    DiscreteValuesListFilter,
+    DiscreteValuesListAllRequiredFilter,
+    DiscreteValuesListAnyRequiredFilter,
     RangeFilter,
     RangeDateTimeFilter,
     RangeMonetaryAmountFilter,
@@ -42,14 +44,16 @@ define([
 
                 scope.filterInstance = createFilterInstance();
 
-                /* jshint maxcomplexity:7 */
+                /* jshint maxcomplexity:8 */
                 function createFilterInstance() {
                     var filterId = FilterIdGeneratorService.next();
                     switch (scope.filterType) {
                         case 'discrete':
                             return new DiscreteValuesFilter(filterId, attrs.label, attrs.filterablePropertyName);
-                        case 'discreteList':
-                            return new DiscreteValuesListFilter(filterId, attrs.label, attrs.filterablePropertyName);
+                        case 'discreteListAllRequired':
+                            return new DiscreteValuesListAllRequiredFilter(filterId, attrs.label, attrs.filterablePropertyName);
+                        case 'discreteListAnyRequired':
+                            return new DiscreteValuesListAnyRequiredFilter(filterId, attrs.label, attrs.filterablePropertyName);
                         case 'range':
                             return new RangeFilter(filterId, attrs.label, attrs.filterablePropertyName);
                         case 'rangeDateTime':
@@ -63,6 +67,7 @@ define([
 
                 scope.valuesDisplayFilter = attrs.valuesDisplayFilter;
                 scope.valuesDisplayFilterOptions = attrs.valuesDisplayFilterOptions;
+                scope.hidePriceFrom = (attrs.hidePriceFrom === 'true');
 
                 StatisticsGatheringRequestsRegistryService.register({
                       property: scope.filterInstance.getFilterablePropertyName()

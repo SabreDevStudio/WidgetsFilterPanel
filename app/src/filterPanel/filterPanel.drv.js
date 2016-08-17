@@ -1,5 +1,5 @@
 define([
-    'common/WidgetGlobalCallbacks'
+    'infrastructure/WidgetGlobalCallbacks'
     ],
     function (
     WidgetGlobalCallbacks

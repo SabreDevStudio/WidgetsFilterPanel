@@ -6,11 +6,17 @@ define([
     ) {
         'use strict';
 
-        function StatisticsCalculator(statisticsSpecifications) {
+        function StatisticsCalculator(statisticsSpecifications, modelObjectAccessors) {
             if (statisticsSpecifications.length === 0) {
                 throw new Error("No point to create statistics calculator on empty statistics definitions");
             }
             this.statisticsSpecifications = statisticsSpecifications;
+
+            if (modelObjectAccessors) {
+                this.pricePropertyAmountAccessor = modelObjectAccessors.pricePropertyAmountAccessor;
+                this.pricePropertyAmountForPriceFrom = modelObjectAccessors.pricePropertyAmountForPriceFrom;
+                this.pricePropertyCurrencyForPriceFrom = modelObjectAccessors.pricePropertyCurrencyForPriceFrom;
+            }
         }
 
         /**
@@ -113,8 +119,8 @@ define([
          */
         StatisticsCalculator.prototype.getMonetaryAmountRangeStatistics = function (modelObjectArray, propertyName) {
             return {
-                min: this.getMinValue(modelObjectArray, propertyName, 'amount'),
-                max: this.getMaxValue(modelObjectArray, propertyName, 'amount')
+                min: this.getMinValue(modelObjectArray, propertyName, this.pricePropertyAmountAccessor),
+                max: this.getMaxValue(modelObjectArray, propertyName, this.pricePropertyAmountAccessor)
             };
         };
 
@@ -149,7 +155,7 @@ define([
          */
         StatisticsCalculator.prototype.getDiscreteValuesStatistics = function (modelObjectArray, propertyName) {
             var selectableValues =  _.chain(modelObjectArray)
-                .groupByAndGetCountAndMin(propertyName, 'totalFareAmount', 'totalFareCurrency').map(function (groupingItem) {
+                .groupByAndGetCountAndMin(propertyName, this.pricePropertyAmountForPriceFrom, this.pricePropertyCurrencyForPriceFrom).map(function (groupingItem) {
                     return {
                         value: groupingItem.value
                         , count: groupingItem.count

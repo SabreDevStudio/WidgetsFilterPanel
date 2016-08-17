@@ -8,14 +8,14 @@ define([
     ) {
         'use strict';
 
-        function DiscreteValuesListFilter() {
+        function DiscreteValuesListAllRequiredFilter() {
             DiscreteValuesFilter.apply(this, arguments);
         }
 
-        DiscreteValuesListFilter.prototype = Object.create(DiscreteValuesFilter.prototype);
-        DiscreteValuesListFilter.prototype.constructor = DiscreteValuesListFilter;
+        DiscreteValuesListAllRequiredFilter.prototype = Object.create(DiscreteValuesFilter.prototype);
+        DiscreteValuesListAllRequiredFilter.prototype.constructor = DiscreteValuesListAllRequiredFilter;
 
-        DiscreteValuesListFilter.prototype.filteringFunctionConstructor = function (filterablePropertyName, permittedPropertyValues) {
+        DiscreteValuesListAllRequiredFilter.prototype.filteringFunctionConstructor = function (filterablePropertyName, permittedPropertyValues) {
             return function (element) {
                 var elementValuesList = _.result(element, filterablePropertyName);
                 return elementValuesList.every(function (elementValue) {
@@ -24,5 +24,5 @@ define([
             };
         };
 
-        return DiscreteValuesListFilter;
+        return DiscreteValuesListAllRequiredFilter;
     });

@@ -450,7 +450,7 @@ define('templates.mod',["angular"], function(angular) { angular.module("WidgetsF
 
 
   $templateCache.put('../app/src/filterPanel/valuesFilter.tpl.html',
-    "<div ng-show=filterInstance.filterInitialized class=SDSValuesFilter><div class=\"panel panel-default\"><div class=\"panel-heading SDS-responsive-panel-heading\"><div ng-click=\"filterContentCollapsed =! filterContentCollapsed\"><span ng-if=filterContentCollapsed class=\"glyphicon glyphicon-collapse-up\"></span> <span ng-if=!filterContentCollapsed class=\"glyphicon glyphicon-collapse-down\"></span> {{::filterInstance.label}}</div></div><div class=\"panel-body SDS-responsive-panel-body\" ng-hide=filterContentCollapsed><div ng-if=\"filterType === 'discrete' || filterType === 'discreteList'\"><div class=checkbox ng-repeat=\"i in filterInstance.selectableValues\"><label class=SDSDiscreteFilterValueLabel for={{::i.filterablePropertyName}}_{{i.propertyValue}}><input type=checkbox id={{::i.filterablePropertyName}}_{{i.propertyValue}} checked ng-model=i.permitted ng-change=permittedValuesChanged()> <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span> <span class=pull-right>{{i.minPrice | currency:i.currency:0}}</span></label></div></div><div ng-if=\"filterType === 'boolean'\"><div class=checkbox><label for={{::filterInstance.filterablePropertyName}}><input type=checkbox id={{::filterInstance.filterablePropertyName}} ng-checked=filterInstance.isRequired ng-model=filterInstance.isRequired ng-change=permittedValuesChanged()> {{::filterInstance.label}}</label></div></div><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime' || filterType === 'rangeMonetaryAmount'\" class=SDSRangeFilter><span class=top-left><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.minConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.minConstraint.amount | currency:filterInstance.minConstraint.currency}} </span></span><span class=pull-right><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.maxConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.maxConstraint.amount | currency:filterInstance.maxConstraint.currency}}</span></span><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\" range-slider min=filterInstance.minConstraint max=filterInstance.maxConstraint model-min=filterInstance.min model-max=filterInstance.max prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter={{valuesDisplayFilter}} filter-options={{valuesDisplayFilterOptions}} on-handle-up=permittedValuesChanged()></div><div ng-if=\"filterType === 'rangeMonetaryAmount'\" range-slider min=filterInstance.minConstraint.amount max=filterInstance.maxConstraint.amount model-min=filterInstance.min.amount model-max=filterInstance.max.amount prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter=currency filter-options={{filterInstance.minConstraint.currency}} decimal-places=2 on-handle-up=permittedValuesChanged()></div></div></div></div></div>"
+    "<div ng-show=filterInstance.filterInitialized class=SDSValuesFilter><div class=\"panel panel-default\"><div class=\"panel-heading SDS-responsive-panel-heading\"><div ng-click=\"filterContentCollapsed =! filterContentCollapsed\"><span ng-if=filterContentCollapsed class=\"glyphicon glyphicon-collapse-up\"></span> <span ng-if=!filterContentCollapsed class=\"glyphicon glyphicon-collapse-down\"></span> {{::filterInstance.label}}</div></div><div class=\"panel-body SDS-responsive-panel-body\" ng-hide=filterContentCollapsed><div ng-if=\"filterType === 'discrete' || filterType === 'discreteListAllRequired' || filterType === 'discreteListAnyRequired'\"><div class=checkbox ng-repeat=\"i in filterInstance.selectableValues\"><label class=SDSDiscreteFilterValueLabel for={{::i.filterablePropertyName}}_{{i.propertyValue}}><input type=checkbox id={{::i.filterablePropertyName}}_{{i.propertyValue}} checked ng-model=i.permitted ng-change=permittedValuesChanged()> <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span> <span class=pull-right ng-hide=hidePriceFrom>{{i.minPrice | currency:i.currency:0}}</span></label></div></div><div ng-if=\"filterType === 'boolean'\"><div class=checkbox><label for={{::filterInstance.filterablePropertyName}}><input type=checkbox id={{::filterInstance.filterablePropertyName}} ng-checked=filterInstance.isRequired ng-model=filterInstance.isRequired ng-change=permittedValuesChanged()> {{::filterInstance.label}}</label></div></div><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime' || filterType === 'rangeMonetaryAmount'\" class=SDSRangeFilter><span class=top-left><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.minConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.minConstraint.amount | currency:filterInstance.minConstraint.currency}} </span></span><span class=pull-right><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.maxConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.maxConstraint.amount | currency:filterInstance.maxConstraint.currency}}</span></span><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\" range-slider min=filterInstance.minConstraint max=filterInstance.maxConstraint model-min=filterInstance.min model-max=filterInstance.max prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter={{valuesDisplayFilter}} filter-options={{valuesDisplayFilterOptions}} on-handle-up=permittedValuesChanged()></div><div ng-if=\"filterType === 'rangeMonetaryAmount'\" range-slider min=filterInstance.minConstraint.amount max=filterInstance.maxConstraint.amount model-min=filterInstance.min.amount model-max=filterInstance.max.amount prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter=currency filter-options={{filterInstance.minConstraint.currency}} decimal-places=2 on-handle-up=permittedValuesChanged()></div></div></div></div></div>"
   );
  }]);});
 /*
@@ -24481,7 +24481,7 @@ define('filterPanel/filterPanel.ctr',[
 
 }));
 
-define('common/WidgetGlobalCallbacks',[
+define('infrastructure/WidgetGlobalCallbacks',[
     'elementQuery'
 ], function(
     elementQuery
@@ -24503,7 +24503,7 @@ define('common/WidgetGlobalCallbacks',[
     };
 });
 define('filterPanel/filterPanel.drv',[
-    'common/WidgetGlobalCallbacks'
+    'infrastructure/WidgetGlobalCallbacks'
     ],
     function (
     WidgetGlobalCallbacks
@@ -28808,7 +28808,7 @@ define('filterModel/DiscreteValuesFilter',[
         return DiscreteValuesFilter;
     });
 
-define('filterModel/DiscreteValuesListFilter',[
+define('filterModel/DiscreteValuesListAllRequiredFilter',[
           'lodash'
         , 'filterModel/DiscreteValuesFilter'
     ],
@@ -28818,14 +28818,14 @@ define('filterModel/DiscreteValuesListFilter',[
     ) {
         'use strict';
 
-        function DiscreteValuesListFilter() {
+        function DiscreteValuesListAllRequiredFilter() {
             DiscreteValuesFilter.apply(this, arguments);
         }
 
-        DiscreteValuesListFilter.prototype = Object.create(DiscreteValuesFilter.prototype);
-        DiscreteValuesListFilter.prototype.constructor = DiscreteValuesListFilter;
+        DiscreteValuesListAllRequiredFilter.prototype = Object.create(DiscreteValuesFilter.prototype);
+        DiscreteValuesListAllRequiredFilter.prototype.constructor = DiscreteValuesListAllRequiredFilter;
 
-        DiscreteValuesListFilter.prototype.filteringFunctionConstructor = function (filterablePropertyName, permittedPropertyValues) {
+        DiscreteValuesListAllRequiredFilter.prototype.filteringFunctionConstructor = function (filterablePropertyName, permittedPropertyValues) {
             return function (element) {
                 var elementValuesList = _.result(element, filterablePropertyName);
                 return elementValuesList.every(function (elementValue) {
@@ -28834,7 +28834,36 @@ define('filterModel/DiscreteValuesListFilter',[
             };
         };
 
-        return DiscreteValuesListFilter;
+        return DiscreteValuesListAllRequiredFilter;
+    });
+
+define('filterModel/DiscreteValuesListAnyRequiredFilter',[
+          'lodash'
+        , 'filterModel/DiscreteValuesFilter'
+    ],
+    function (
+          _
+        , DiscreteValuesFilter
+    ) {
+        'use strict';
+
+        function DiscreteValuesListAnyRequiredFilter() {
+            DiscreteValuesFilter.apply(this, arguments);
+        }
+
+        DiscreteValuesListAnyRequiredFilter.prototype = Object.create(DiscreteValuesFilter.prototype);
+        DiscreteValuesListAnyRequiredFilter.prototype.constructor = DiscreteValuesListAnyRequiredFilter;
+
+        DiscreteValuesListAnyRequiredFilter.prototype.filteringFunctionConstructor = function (filterablePropertyName, permittedPropertyValues) {
+            return function (element) {
+                var elementValuesList = _.result(element, filterablePropertyName);
+                return elementValuesList.some(function (elementValue) {
+                    return _.includes(permittedPropertyValues, elementValue);
+                });
+            };
+        };
+
+        return DiscreteValuesListAnyRequiredFilter;
     });
 
 define('filterModel/RangeFilter',[
@@ -29034,7 +29063,8 @@ define('filterPanel/valuesFilter.drv',[
     'lodash',
     'moment',
     'filterModel/DiscreteValuesFilter',
-    'filterModel/DiscreteValuesListFilter',
+    'filterModel/DiscreteValuesListAllRequiredFilter',
+    'filterModel/DiscreteValuesListAnyRequiredFilter',
     'filterModel/RangeFilter',
     'filterModel/RangeDateTimeFilter',
     'filterModel/RangeMonetaryAmountFilter',
@@ -29044,7 +29074,8 @@ define('filterPanel/valuesFilter.drv',[
     _,
     moment,
     DiscreteValuesFilter,
-    DiscreteValuesListFilter,
+    DiscreteValuesListAllRequiredFilter,
+    DiscreteValuesListAnyRequiredFilter,
     RangeFilter,
     RangeDateTimeFilter,
     RangeMonetaryAmountFilter,
@@ -29074,14 +29105,16 @@ define('filterPanel/valuesFilter.drv',[
 
                 scope.filterInstance = createFilterInstance();
 
-                /* jshint maxcomplexity:7 */
+                /* jshint maxcomplexity:8 */
                 function createFilterInstance() {
                     var filterId = FilterIdGeneratorService.next();
                     switch (scope.filterType) {
                         case 'discrete':
                             return new DiscreteValuesFilter(filterId, attrs.label, attrs.filterablePropertyName);
-                        case 'discreteList':
-                            return new DiscreteValuesListFilter(filterId, attrs.label, attrs.filterablePropertyName);
+                        case 'discreteListAllRequired':
+                            return new DiscreteValuesListAllRequiredFilter(filterId, attrs.label, attrs.filterablePropertyName);
+                        case 'discreteListAnyRequired':
+                            return new DiscreteValuesListAnyRequiredFilter(filterId, attrs.label, attrs.filterablePropertyName);
                         case 'range':
                             return new RangeFilter(filterId, attrs.label, attrs.filterablePropertyName);
                         case 'rangeDateTime':
@@ -29095,6 +29128,7 @@ define('filterPanel/valuesFilter.drv',[
 
                 scope.valuesDisplayFilter = attrs.valuesDisplayFilter;
                 scope.valuesDisplayFilterOptions = attrs.valuesDisplayFilterOptions;
+                scope.hidePriceFrom = (attrs.hidePriceFrom === 'true');
 
                 StatisticsGatheringRequestsRegistryService.register({
                       property: scope.filterInstance.getFilterablePropertyName()
@@ -29208,6 +29242,60 @@ define('filterPanel/filterPanel.mod',[
                 ValuesFilterDirective])
     }
 );
+define('commonDisplayFilters/makeMomentAndFormat.ftr',[
+    'lodash',
+    'moment'
+    ],
+    function (
+    _,
+    moment
+    ) {
+    'use strict';
+
+        return function () {
+            return function (value, momentFormat) {
+                if (_.isUndefined(value) || value === null) {
+                    return '';
+                }
+                return moment(value).format(momentFormat);
+            };
+        }
+    });
+define('commonDisplayFilters/makeMomentDurationAndFormat.ftr',[
+    'lodash',
+    'moment'
+    ],
+    function (
+    _,
+    moment
+    ) {
+    'use strict';
+
+    return function () {
+        return function (value, momentFormat, suffix) {
+            if (_.isUndefined(value) || value === null) {
+                return '';
+            }
+            return moment.duration(value, momentFormat).humanize(suffix);
+        };
+    }    });
+define('commonDisplayFilters/commonDisplayFilters.mod',[
+        'angular',
+        'commonDisplayFilters/makeMomentAndFormat.ftr',
+        'commonDisplayFilters/makeMomentDurationAndFormat.ftr'
+    ],
+    function (
+        angular,
+        makeMomentAndFormatFitler,
+        makeMomentDurationAndFormatFitler
+) {
+        'use strict';
+
+        return angular.module('WidgetsFilterPanel.commonDisplayFilters', [])
+            .filter('makeMomentAndFormat', makeMomentAndFormatFitler)
+            .filter('makeMomentDurationAndFormat', makeMomentDurationAndFormatFitler)
+    }
+);
 define('statistics/LodashExtensions',[
         'lodash'
     ], function (
@@ -29318,11 +29406,17 @@ define('statistics/StatisticsCalculator',[
     ) {
         'use strict';
 
-        function StatisticsCalculator(statisticsSpecifications) {
+        function StatisticsCalculator(statisticsSpecifications, modelObjectAccessors) {
             if (statisticsSpecifications.length === 0) {
                 throw new Error("No point to create statistics calculator on empty statistics definitions");
             }
             this.statisticsSpecifications = statisticsSpecifications;
+
+            if (modelObjectAccessors) {
+                this.pricePropertyAmountAccessor = modelObjectAccessors.pricePropertyAmountAccessor;
+                this.pricePropertyAmountForPriceFrom = modelObjectAccessors.pricePropertyAmountForPriceFrom;
+                this.pricePropertyCurrencyForPriceFrom = modelObjectAccessors.pricePropertyCurrencyForPriceFrom;
+            }
         }
 
         /**
@@ -29425,8 +29519,8 @@ define('statistics/StatisticsCalculator',[
          */
         StatisticsCalculator.prototype.getMonetaryAmountRangeStatistics = function (modelObjectArray, propertyName) {
             return {
-                min: this.getMinValue(modelObjectArray, propertyName, 'amount'),
-                max: this.getMaxValue(modelObjectArray, propertyName, 'amount')
+                min: this.getMinValue(modelObjectArray, propertyName, this.pricePropertyAmountAccessor),
+                max: this.getMaxValue(modelObjectArray, propertyName, this.pricePropertyAmountAccessor)
             };
         };
 
@@ -29461,7 +29555,7 @@ define('statistics/StatisticsCalculator',[
          */
         StatisticsCalculator.prototype.getDiscreteValuesStatistics = function (modelObjectArray, propertyName) {
             var selectableValues =  _.chain(modelObjectArray)
-                .groupByAndGetCountAndMin(propertyName, 'totalFareAmount', 'totalFareCurrency').map(function (groupingItem) {
+                .groupByAndGetCountAndMin(propertyName, this.pricePropertyAmountForPriceFrom, this.pricePropertyCurrencyForPriceFrom).map(function (groupingItem) {
                     return {
                         value: groupingItem.value
                         , count: groupingItem.count
@@ -29478,10 +29572,12 @@ define('statistics/StatisticsCalculator',[
     });
 
 define('filterService.srv',[
-        'statistics/StatisticsCalculator'
+        'statistics/StatisticsCalculator',
+        'lodash'
     ],
     function (
-        StatisticsCalculator
+        StatisticsCalculator,
+        _
     ) {
         'use strict';
 
@@ -29491,16 +29587,24 @@ define('filterService.srv',[
         StatisticsBroadcastingService
     ) {
 
+        var modelObjectAccessors;
+
         return {
+            configure: function (modelObjectAccessorsArg) {
+                modelObjectAccessors = modelObjectAccessorsArg;
+            },
             onFilterChange: function (callbackFn) {
-                FilteringCriteriaChangedNotificationService.registerListener(callbackFn); // TODO pass also this reference and then apply?
+                FilteringCriteriaChangedNotificationService.registerListener(callbackFn);
             },
             updateFiltersState: function (modelObjectsArray) {
+                if (_.isUndefined(modelObjectAccessors)) {
+                    throw new Error("call configure first before using the service");
+                }
                 // WARN: dom element values filter directives must already register their statistics definitions, before this updateFiltersState is first called.
                 // Normally it is not a problem as model objects are fetched from web service and similar.
                 // This is deficiency, but not fixing now not to complicate the design
                 var requestedStatisticsDescriptions = StatisticsGatheringRequestsRegistryService.getAll();
-                var statisticsCalculator = new StatisticsCalculator(requestedStatisticsDescriptions);
+                var statisticsCalculator = new StatisticsCalculator(requestedStatisticsDescriptions, modelObjectAccessors);
 
                 var statistics = statisticsCalculator.getCurrentValuesBounds(modelObjectsArray);
                 StatisticsBroadcastingService.statistics = statistics;
@@ -29516,12 +29620,14 @@ define('WidgetsFilterPanel.mod',[
     'templates.mod',
     'filterPanel/filterPanel.mod',
     'messaging/messaging.mod',
+    'commonDisplayFilters/commonDisplayFilters.mod',
     'filterService.srv'
 ], function (
     angular,
     TemplatesModule,
     FilterPanelModule,
     MessagingModule,
+    CommonDisplayFiltersModule,
     FilterService
 ) {
     'use strict';
@@ -29529,7 +29635,8 @@ define('WidgetsFilterPanel.mod',[
     angular.module('WidgetsFilterPanel', [
         'WidgetsFilterPanel.templates',
         'WidgetsFilterPanel.messaging',
-        'WidgetsFilterPanel.filterPanel'
+        'WidgetsFilterPanel.filterPanel',
+        'WidgetsFilterPanel.commonDisplayFilters'
     ])
         .factory('filterService', [
             'FilteringCriteriaChangedNotificationService',

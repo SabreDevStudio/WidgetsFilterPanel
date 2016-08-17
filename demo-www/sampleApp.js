@@ -30,6 +30,14 @@ function sampleApp() {
 
                 scope.filteredItems = items;
 
+                filterService.configure(
+                    {
+                        pricePropertyAmountAccessor: 'amount',
+                        pricePropertyAmountForPriceFrom: 'price.amount',
+                        pricePropertyCurrencyForPriceFrom: 'price.currency'
+                    }
+                );
+
                 filterService.onFilterChange(function (filteringFn) {
                     scope.filteredItems = items.filter(filteringFn);
                 });
