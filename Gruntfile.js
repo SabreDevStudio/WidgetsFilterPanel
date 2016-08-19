@@ -164,6 +164,15 @@ module.exports = function (grunt) {
     'css-pipeline'
   ]);
 
+  grunt.registerTask('dist-all-skip-ut', [
+    'clean:dist',
+    'sources-pipeline',
+    'static-resources',
+    'requirejs:compile',
+    'requirejs:compile-no-uglify',
+    'css-pipeline'
+  ]);
+
   grunt.registerTask('unit-test', 'karma:unit-Chrome');
 
   grunt.registerTask('sources-pipeline', ['jshint', 'ngtemplates']);
@@ -172,6 +181,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('static-resources', ['copy:bootstrap_glyphicons_fonts']);
 
-  grunt.registerTask('default', 'dist-all');
+  grunt.registerTask('default', 'dist-all-skip-ut');
 
 };
