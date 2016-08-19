@@ -73,7 +73,7 @@ define([
                 StatisticsGatheringRequestsRegistryService.register({
                       property: scope.filterInstance.getFilterablePropertyName()
                     , type: scope.filterInstance.getRequestedStatisticsType()
-                });
+                }, filtersPanelController.getOwnerId());
 
                 scope.$on(statisticsUpdateNotification, function () {
                     filtersPanelController.notifyOnStatisticsUpdate();

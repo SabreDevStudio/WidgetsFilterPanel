@@ -30,7 +30,11 @@ define([
                                 return filteringFn(modelObj)
                             });
                         };
-                        FilteringCriteriaChangedNotificationService.notify(aggregateFilteringFn);
+                        FilteringCriteriaChangedNotificationService.notify(aggregateFilteringFn, $scope.ownerId);
+                    };
+
+                    this.getOwnerId = function () {
+                        return $scope.ownerId;
                     };
 
                     $scope.resetAllFilters = function () {

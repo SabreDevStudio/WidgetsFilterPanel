@@ -1,15 +1,25 @@
-define([],
-    function () {
+define([
+        'lodash'
+    ],
+    function (
+        _
+    ) {
         'use strict';
 
         return function FilteringCriteriaChangedNotificationService() {
-            var listeners = [];
+            var listeners = {};
             return {
-                registerListener: function (listenerFn) {
-                    listeners.push(listenerFn);
+                registerListener: function (listenerFn, listenerOwner) {
+                    if (_.isUndefined(listeners[listenerOwner])) {
+                        listeners[listenerOwner] = [];
+                    }
+                    listeners[listenerOwner].push(listenerFn);
                 },
-                notify: function (filteringFn) {
-                    listeners.forEach(function (listenerFn) {
+                notify: function (filteringFn, listenerOwner) {
+                    if (_.isUndefined(listeners[listenerOwner])) {
+                        return;
+                    }
+                    listeners[listenerOwner].forEach(function (listenerFn) {
                         listenerFn(filteringFn);
                     });
                 }

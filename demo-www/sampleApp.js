@@ -2,8 +2,8 @@ function sampleApp() {
     var app = angular.module("sampleApp", ['WidgetsFilterPanel'])
         .controller("sampleAppCtrl", [
             '$scope',
-            'filterService',
-            function(scope, filterService) {
+            'filterServiceFactory',
+            function(scope, filterServiceFactory) {
                 var items = [
                     {
                         price: {
@@ -29,6 +29,8 @@ function sampleApp() {
                 ];
 
                 scope.filteredItems = items;
+
+                var filterService = filterServiceFactory.newInstance('some-widgets-app');
 
                 filterService.configure(
                     {

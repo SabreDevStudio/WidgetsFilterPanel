@@ -4,14 +4,14 @@ define([
     'filterPanel/filterPanel.mod',
     'messaging/messaging.mod',
     'commonDisplayFilters/commonDisplayFilters.mod',
-    'filterService.srv'
+    'filterServiceFactory.srv'
 ], function (
     angular,
     TemplatesModule,
     FilterPanelModule,
     MessagingModule,
     CommonDisplayFiltersModule,
-    FilterService
+    filterServiceFactory
 ) {
     'use strict';
 
@@ -21,11 +21,11 @@ define([
         'WidgetsFilterPanel.filterPanel',
         'WidgetsFilterPanel.commonDisplayFilters'
     ])
-        .factory('filterService', [
+        .factory('filterServiceFactory', [
             'FilteringCriteriaChangedNotificationService',
             'StatisticsGatheringRequestsRegistryService',
             'StatisticsBroadcastingService',
             '$interval',
-            FilterService
+            filterServiceFactory
         ])
 });

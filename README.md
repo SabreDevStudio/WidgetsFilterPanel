@@ -11,13 +11,20 @@ See demo-www.
 3b. include this module css in your application css (css bundle)
 4. create and configure filter widget: use directives filterPanel and valuesFilter. Typically encapsulate them into your custom directive, specific to your domain model.
 For example (directive template):
-       <filter-panel>
+       <filter-panel owner-id="some-widgets-app">
                 <values-filter type="discrete" label="Number of stops" filterable-property-name="numberOfStops" values-display-filter="humanizeNumberOfStops"></values-filter>
 
                 <values-filter type="rangeMonetaryAmount" label="Price" filterable-property-name="price" can-filter-only-on-max-value="true"></values-filter>
        </filter-panel>
 Unfortunately your domain knowledge is in these directives configuration. In the future filters should boot dynamically from domain model description that you will provide configuring this module (or configuring filterService, or while providing first model objects array to filter).
-5. in your product list directive link function (or controller) inject service 'filterService'. Call:
+
+Please pay attention to owner-id attribute on filter-panel. It must be same as later in filterServiceFactory.newInstance (see below). It is necessary to have such id, because there may be multiple filter-panels in one application, collaborating with different product list controllers/directives.
+This necessity will also go away when filters definitions will be sent from model.
+
+5. in your product list directive link function (or controller) inject service 'filterServiceFactory' and then with it create filterService
+    var filterService = filterServiceFactory.newInstance('some-widgets-app');
+
+ Then call:
     - filterService.configure(), for example
                     filterService.configure(
                         {

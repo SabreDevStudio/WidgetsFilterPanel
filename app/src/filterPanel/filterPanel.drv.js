@@ -9,7 +9,9 @@ define([
             return {
                 restrict: 'E',
                 replace: true,
-                scope: true,
+                scope: {
+                    ownerId: '@'
+                },
                 transclude: true,
                 templateUrl: '../app/src/filterPanel/filterPanel.tpl.html',
                 controller: 'FiltersPanelCtrl',
