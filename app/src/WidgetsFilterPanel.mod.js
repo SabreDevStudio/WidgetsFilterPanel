@@ -25,6 +25,7 @@ define([
             'FilteringCriteriaChangedNotificationService',
             'StatisticsGatheringRequestsRegistryService',
             'StatisticsBroadcastingService',
+            '$interval',
             FilterService
         ])
 });
