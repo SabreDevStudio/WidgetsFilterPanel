@@ -22,6 +22,12 @@ define([
                     listeners[listenerOwner].forEach(function (listenerFn) {
                         listenerFn(filteringFn);
                     });
+                },
+                clearAllListeners: function (listenerOwner) {
+                    if (_.isUndefined(listeners[listenerOwner])) {
+                        return;
+                    }
+                    listeners[listenerOwner] = [];
                 }
             };
         };

@@ -49,6 +49,9 @@ function sampleApp() {
                     filterService.updateFiltersState(items);
                 }, 100);
 
+                scope.$on('$destroy', function () {
+                    filterService.destroy();
+                })
 
             }])
         .filter('humanizeNumberOfStops', function () {

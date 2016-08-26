@@ -54,5 +54,9 @@ define([
             }, 10);
         };
 
+        this.destroy = function () {
+            FilteringCriteriaChangedNotificationService.clearAllListeners(that.creatorId);
+        }
+
     };
 });
