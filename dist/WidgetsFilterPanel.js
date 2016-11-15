@@ -10,7 +10,7 @@
     window.WidgetsFilterPanel = factory();
   }
 }(this, function() {/**
- * @license almond 0.3.2 Copyright jQuery Foundation and other contributors.
+ * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
  * Released under MIT license, http://github.com/requirejs/almond/LICENSE
  */
 //Going sloppy to avoid 'use strict' string cost, but strict practices should
@@ -206,32 +206,39 @@ var requirejs, require, define;
         return [prefix, name];
     }
 
+    //Creates a parts array for a relName where first part is plugin ID,
+    //second part is resource ID. Assumes relName has already been normalized.
+    function makeRelParts(relName) {
+        return relName ? splitPrefix(relName) : [];
+    }
+
     /**
      * Makes a name map, normalizing the name, and using a plugin
      * for normalization if necessary. Grabs a ref to plugin
      * too, as an optimization.
      */
-    makeMap = function (name, relName) {
+    makeMap = function (name, relParts) {
         var plugin,
             parts = splitPrefix(name),
-            prefix = parts[0];
+            prefix = parts[0],
+            relResourceName = relParts[1];
 
         name = parts[1];
 
         if (prefix) {
-            prefix = normalize(prefix, relName);
+            prefix = normalize(prefix, relResourceName);
             plugin = callDep(prefix);
         }
 
         //Normalize according
         if (prefix) {
             if (plugin && plugin.normalize) {
-                name = plugin.normalize(name, makeNormalize(relName));
+                name = plugin.normalize(name, makeNormalize(relResourceName));
             } else {
-                name = normalize(name, relName);
+                name = normalize(name, relResourceName);
             }
         } else {
-            name = normalize(name, relName);
+            name = normalize(name, relResourceName);
             parts = splitPrefix(name);
             prefix = parts[0];
             name = parts[1];
@@ -278,13 +285,14 @@ var requirejs, require, define;
     };
 
     main = function (name, deps, callback, relName) {
-        var cjsModule, depName, ret, map, i,
+        var cjsModule, depName, ret, map, i, relParts,
             args = [],
             callbackType = typeof callback,
             usingExports;
 
         //Use name if no relName
         relName = relName || name;
+        relParts = makeRelParts(relName);
 
         //Call the callback to define the module, if necessary.
         if (callbackType === 'undefined' || callbackType === 'function') {
@@ -293,7 +301,7 @@ var requirejs, require, define;
             //Default to [require, exports, module] if no deps
             deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
             for (i = 0; i < deps.length; i += 1) {
-                map = makeMap(deps[i], relName);
+                map = makeMap(deps[i], relParts);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
@@ -349,7 +357,7 @@ var requirejs, require, define;
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
             //Normalize module name, if it contains . or ..
-            return callDep(makeMap(deps, callback).f);
+            return callDep(makeMap(deps, makeRelParts(callback)).f);
         } else if (!deps.splice) {
             //deps is a config object, not an array.
             config = deps;
@@ -450,7 +458,7 @@ define('templates.mod',["angular"], function(angular) { angular.module("WidgetsF
 
 
   $templateCache.put('../app/src/filterPanel/valuesFilter.tpl.html',
-    "<div ng-show=filterInstance.filterInitialized class=SDSValuesFilter><div class=\"panel panel-default\"><div class=\"panel-heading SDS-responsive-panel-heading\"><div ng-click=\"filterContentCollapsed =! filterContentCollapsed\"><span ng-if=filterContentCollapsed class=\"glyphicon glyphicon-collapse-up\"></span> <span ng-if=!filterContentCollapsed class=\"glyphicon glyphicon-collapse-down\"></span> {{::filterInstance.label}}</div></div><div class=\"panel-body SDS-responsive-panel-body\" ng-hide=filterContentCollapsed><div ng-if=\"filterType === 'discrete' || filterType === 'discreteListAllRequired' || filterType === 'discreteListAnyRequired'\"><div class=checkbox ng-repeat=\"i in filterInstance.selectableValues\"><label class=SDSDiscreteFilterValueLabel for={{::i.filterablePropertyName}}_{{i.propertyValue}}><input type=checkbox id={{::i.filterablePropertyName}}_{{i.propertyValue}} checked ng-model=i.permitted ng-change=permittedValuesChanged()> <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span> <span class=pull-right ng-hide=hidePriceFrom>{{i.minPrice | currency:i.currency:0}}</span></label></div></div><div ng-if=\"filterType === 'boolean'\"><div class=checkbox><label for={{::filterInstance.filterablePropertyName}}><input type=checkbox id={{::filterInstance.filterablePropertyName}} ng-checked=filterInstance.isRequired ng-model=filterInstance.isRequired ng-change=permittedValuesChanged()> {{::filterInstance.label}}</label></div></div><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime' || filterType === 'rangeMonetaryAmount'\" class=SDSRangeFilter><span class=top-left><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.minConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.minConstraint.amount | currency:filterInstance.minConstraint.currency}} </span></span><span class=pull-right><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.maxConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.maxConstraint.amount | currency:filterInstance.maxConstraint.currency}}</span></span><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\" range-slider min=filterInstance.minConstraint max=filterInstance.maxConstraint model-min=filterInstance.min model-max=filterInstance.max prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter={{valuesDisplayFilter}} filter-options={{valuesDisplayFilterOptions}} on-handle-up=permittedValuesChanged()></div><div ng-if=\"filterType === 'rangeMonetaryAmount'\" range-slider min=filterInstance.minConstraint.amount max=filterInstance.maxConstraint.amount model-min=filterInstance.min.amount model-max=filterInstance.max.amount prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter=currency filter-options={{filterInstance.minConstraint.currency}} decimal-places=2 on-handle-up=permittedValuesChanged()></div></div></div></div></div>"
+    "<div ng-show=filterInstance.filterInitialized class=SDSValuesFilter><div class=\"panel panel-default\"><div class=\"panel-heading SDS-responsive-panel-heading\"><div ng-click=\"filterContentCollapsed =! filterContentCollapsed\"><span ng-if=filterContentCollapsed class=\"glyphicon glyphicon-collapse-up\"></span> <span ng-if=!filterContentCollapsed class=\"glyphicon glyphicon-collapse-down\"></span> {{::filterInstance.label}}</div></div><div class=\"panel-body SDS-responsive-panel-body\" ng-hide=filterContentCollapsed><div ng-if=\"filterType === 'discrete' || filterType === 'discreteListAllRequired' || filterType === 'discreteListAnyRequired'\"><div class=checkbox ng-repeat=\"i in filterInstance.selectableValues\"><label class=SDSDiscreteFilterValueLabel for={{::i.filterablePropertyName}}_{{i.propertyValue}}><input type=checkbox id={{::i.filterablePropertyName}}_{{i.propertyValue}} checked ng-model=i.permitted ng-change=permittedValuesChanged()> <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span> <span class=pull-right ng-hide=hidePriceFrom>{{i.minPrice | applyFilter:currencyFilter:i.currency:0}}</span></label></div></div><div ng-if=\"filterType === 'boolean'\"><div class=checkbox><label for={{::filterInstance.filterablePropertyName}}><input type=checkbox id={{::filterInstance.filterablePropertyName}} ng-checked=filterInstance.isRequired ng-model=filterInstance.isRequired ng-change=permittedValuesChanged()> {{::filterInstance.label}}</label></div></div><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime' || filterType === 'rangeMonetaryAmount'\" class=SDSRangeFilter><span class=top-left><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.minConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.minConstraint.amount | applyFilter:currencyFilter:filterInstance.minConstraint.currency}} </span></span><span class=pull-right><span ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\">{{filterInstance.maxConstraint | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} </span><span ng-if=\"filterType === 'rangeMonetaryAmount'\">{{filterInstance.maxConstraint.amount | applyFilter:currencyFilter:filterInstance.maxConstraint.currency}}</span></span><div ng-if=\"filterType === 'range' || filterType === 'rangeDateTime'\" range-slider min=filterInstance.minConstraint max=filterInstance.maxConstraint model-min=filterInstance.min model-max=filterInstance.max prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter={{valuesDisplayFilter}} filter-options={{valuesDisplayFilterOptions}} on-handle-up=permittedValuesChanged()></div><div ng-if=\"filterType === 'rangeMonetaryAmount'\" range-slider min=filterInstance.minConstraint.amount max=filterInstance.maxConstraint.amount model-min=filterInstance.min.amount model-max=filterInstance.max.amount prevent-equal-min-max=true show-values=true attach-handle-values=true ng-attr-pin-handle=\"{{canFilterOnlyOnMaxValue && 'min' || canFilterOnlyOnMinValue && 'max' || undefined}}\" filter={{currencyFilter}} filter-options={{filterInstance.minConstraint.currency}} decimal-places=2 on-handle-up=permittedValuesChanged()></div></div></div></div></div>"
   );
  }]);});
 /*
@@ -7018,80 +7026,6 @@ define("angular_bootstrap", ["angular"], function(){});
 
 define("angular_rangeslider", ["angular"], function(){});
 
-define('messaging/filteringCriteriaChangedNotification.srv',[],
-    function () {
-        'use strict';
-
-        return function FilteringCriteriaChangedNotificationService() {
-            var listeners = [];
-            return {
-                registerListener: function (listenerFn) {
-                    listeners.push(listenerFn);
-                },
-                notify: function (filteringFn) {
-                    listeners.forEach(function (listenerFn) {
-                        listenerFn(filteringFn);
-                    });
-                }
-            };
-        };
-});
-define('messaging/statisticsGatheringRequestsRegistry.srv',[],
-    function () {
-        'use strict';
-
-        return function StatisticsGatheringRequestsRegistryService() {
-            var registry = [];
-            return {
-                register: function (statisticDescription) {
-                    registry.push(statisticDescription);
-                },
-                getAll: function () {
-                    return registry;
-                }
-            };
-        }
-    });
-define('messaging/statisticsBroadcast.srv',[],
-    function () {
-        'use strict';
-
-        return function StatisticsBroadcastingService($rootScope, statisticsUpdateNotification) {
-            var service = {
-                statistics: undefined,
-                broadcast: function () {
-                    $rootScope.$broadcast(statisticsUpdateNotification);
-                }
-            };
-            return service;
-        };
-    });
-define('messaging/messaging.mod',[
-        'angular',
-        'messaging/filteringCriteriaChangedNotification.srv',
-        'messaging/statisticsGatheringRequestsRegistry.srv',
-        'messaging/statisticsBroadcast.srv'
-    ],
-    function (
-        angular,
-        FilteringCriteriaChangedNotificationService,
-        StatisticsGatheringRequestsRegistryService,
-        StatisticsBroadcastingService
-    ) {
-        'use strict';
-
-        return angular.module('WidgetsFilterPanel.messaging', [])
-            .constant('resetAllFiltersEvent', 'resetAllFiltersEvent')
-            .constant('statisticsUpdateNotification', 'statisticsUpdateNotification')
-            .factory('FilteringCriteriaChangedNotificationService', FilteringCriteriaChangedNotificationService)
-            .factory('StatisticsGatheringRequestsRegistryService', StatisticsGatheringRequestsRegistryService)
-            .service('StatisticsBroadcastingService', [
-                '$rootScope',
-                'statisticsUpdateNotification',
-                StatisticsBroadcastingService
-            ])
-    }
-);
 /**
  * @license
  * lodash <https://lodash.com/>
@@ -23701,6 +23635,105 @@ define('messaging/messaging.mod',[
   }
 }.call(this));
 
+define('messaging/filteringCriteriaChangedNotification.srv',[
+        'lodash'
+    ],
+    function (
+        _
+    ) {
+        'use strict';
+
+        return function FilteringCriteriaChangedNotificationService() {
+            var listeners = {};
+            return {
+                registerListener: function (listenerFn, listenerOwner) {
+                    if (_.isUndefined(listeners[listenerOwner])) {
+                        listeners[listenerOwner] = [];
+                    }
+                    listeners[listenerOwner].push(listenerFn);
+                },
+                notify: function (filteringFn, listenerOwner) {
+                    if (_.isUndefined(listeners[listenerOwner])) {
+                        return;
+                    }
+                    listeners[listenerOwner].forEach(function (listenerFn) {
+                        listenerFn(filteringFn);
+                    });
+                },
+                clearAllListeners: function (listenerOwner) {
+                    if (_.isUndefined(listeners[listenerOwner])) {
+                        return;
+                    }
+                    listeners[listenerOwner] = [];
+                }
+            };
+        };
+});
+define('messaging/statisticsGatheringRequestsRegistry.srv',[
+        'lodash'
+    ],
+    function (
+        _
+    ) {
+        'use strict';
+
+        return function StatisticsGatheringRequestsRegistryService() {
+            var registry = {};
+            return {
+                register: function (statisticDescription, owner) {
+                    if (_.isUndefined(registry[owner])) {
+                        registry[owner] = [];
+                    }
+                    registry[owner].push(statisticDescription);
+                },
+                getAll: function (owner) {
+                    if (_.isUndefined(registry[owner])) {
+                        return [];
+                    }
+                    return registry[owner];
+                }
+            };
+        }
+    });
+define('messaging/statisticsBroadcast.srv',[],
+    function () {
+        'use strict';
+
+        return function StatisticsBroadcastingService($rootScope, statisticsUpdateNotification) {
+            return {
+                statistics: {},
+                broadcast: function () {
+                    $rootScope.$broadcast(statisticsUpdateNotification);
+                }
+            };
+        };
+    });
+define('messaging/messaging.mod',[
+        'angular',
+        'messaging/filteringCriteriaChangedNotification.srv',
+        'messaging/statisticsGatheringRequestsRegistry.srv',
+        'messaging/statisticsBroadcast.srv'
+    ],
+    function (
+        angular,
+        FilteringCriteriaChangedNotificationService,
+        StatisticsGatheringRequestsRegistryService,
+        StatisticsBroadcastingService
+    ) {
+        'use strict';
+
+        return angular.module('WidgetsFilterPanel.messaging', [])
+            .constant('resetAllFiltersEvent', 'resetAllFiltersEvent')
+            .constant('statisticsUpdateNotification', 'statisticsUpdateNotification')
+            .factory('FilteringCriteriaChangedNotificationService', FilteringCriteriaChangedNotificationService)
+            .factory('StatisticsGatheringRequestsRegistryService', StatisticsGatheringRequestsRegistryService)
+            .service('StatisticsBroadcastingService', [
+                '$rootScope',
+                'statisticsUpdateNotification',
+                StatisticsBroadcastingService
+            ])
+    }
+);
 define('filterPanel/filterPanel.ctr',[
     'lodash'
     ],
@@ -23733,7 +23766,11 @@ define('filterPanel/filterPanel.ctr',[
                                 return filteringFn(modelObj)
                             });
                         };
-                        FilteringCriteriaChangedNotificationService.notify(aggregateFilteringFn);
+                        FilteringCriteriaChangedNotificationService.notify(aggregateFilteringFn, $scope.ownerId);
+                    };
+
+                    this.getOwnerId = function () {
+                        return $scope.ownerId;
                     };
 
                     $scope.resetAllFilters = function () {
@@ -24513,7 +24550,9 @@ define('filterPanel/filterPanel.drv',[
             return {
                 restrict: 'E',
                 replace: true,
-                scope: true,
+                scope: {
+                    ownerId: '@'
+                },
                 transclude: true,
                 templateUrl: '../app/src/filterPanel/filterPanel.tpl.html',
                 controller: 'FiltersPanelCtrl',
@@ -24525,7 +24564,7 @@ define('filterPanel/filterPanel.drv',[
     });
 
 //! moment.js
-//! version : 2.14.1
+//! version : 2.14.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -28682,7 +28721,7 @@ define('filterPanel/filterPanel.drv',[
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.14.1';
+    utils_hooks__hooks.version = '2.14.2';
 
     setHookCallback(local__createLocal);
 
@@ -29129,15 +29168,19 @@ define('filterPanel/valuesFilter.drv',[
                 scope.valuesDisplayFilter = attrs.valuesDisplayFilter;
                 scope.valuesDisplayFilterOptions = attrs.valuesDisplayFilterOptions;
                 scope.hidePriceFrom = (attrs.hidePriceFrom === 'true');
+                scope.currencyFilter = attrs.customCurrencyFilter || 'currency';
 
                 StatisticsGatheringRequestsRegistryService.register({
                       property: scope.filterInstance.getFilterablePropertyName()
                     , type: scope.filterInstance.getRequestedStatisticsType()
-                });
+                }, filtersPanelController.getOwnerId());
 
                 scope.$on(statisticsUpdateNotification, function () {
                     filtersPanelController.notifyOnStatisticsUpdate();
-                    var statistics = StatisticsBroadcastingService.statistics;
+                    var statistics = StatisticsBroadcastingService.statistics[filtersPanelController.getOwnerId()];
+                    if(_.isUndefined(statistics)){
+                        return;
+                    }
                     scope.filterInstance.applyStatistics(statistics);
                     // need to kick angular as in values filter view we are ngShow on AbstractFilter.filterInitialized. Angular does not see change in this boolean value.
                     scope.$evalAsync();
@@ -29276,7 +29319,11 @@ define('commonDisplayFilters/makeMomentDurationAndFormat.ftr',[
             if (_.isUndefined(value) || value === null) {
                 return '';
             }
-            return moment.duration(value, momentFormat).humanize(suffix);
+            var duration = moment.duration(value, momentFormat);
+            if (duration.asMilliseconds() === 0) {
+                return 0; // patching moment duration corner case when for duration of 0 it humanizes as 'a few seconds'
+            }
+            return duration.humanize(suffix);
         };
     }    });
 define('commonDisplayFilters/commonDisplayFilters.mod',[
@@ -29571,7 +29618,7 @@ define('statistics/StatisticsCalculator',[
         return StatisticsCalculator;
     });
 
-define('filterService.srv',[
+define('FilterService',[
         'statistics/StatisticsCalculator',
         'lodash'
     ],
@@ -29584,31 +29631,77 @@ define('filterService.srv',[
     return function FilterService(
         FilteringCriteriaChangedNotificationService,
         StatisticsGatheringRequestsRegistryService,
-        StatisticsBroadcastingService
+        StatisticsBroadcastingService,
+        $interval,
+        creatorId
     ) {
+
+        this.creatorId = creatorId;
+
+        var that = this;
 
         var modelObjectAccessors;
 
-        return {
-            configure: function (modelObjectAccessorsArg) {
-                modelObjectAccessors = modelObjectAccessorsArg;
-            },
-            onFilterChange: function (callbackFn) {
-                FilteringCriteriaChangedNotificationService.registerListener(callbackFn);
-            },
-            updateFiltersState: function (modelObjectsArray) {
-                if (_.isUndefined(modelObjectAccessors)) {
-                    throw new Error("call configure first before using the service");
+        this.configure = function (modelObjectAccessorsArg) {
+            modelObjectAccessors = modelObjectAccessorsArg;
+        };
+
+        this.onFilterChange = function (callbackFn) {
+            FilteringCriteriaChangedNotificationService.registerListener(callbackFn, that.creatorId);
+        };
+
+        this.updateFiltersState = function (modelObjectsArray) {
+            if (_.isUndefined(modelObjectAccessors)) {
+                throw new Error("call configure first before using the service");
+            }
+            // WARN: dom element values filter directives typically register their statistics definitions, before this updateFiltersState is first called.
+            // Normally it is not a problem as model objects are fetched from web service which takes time.
+            // However it may happen (for example data from webservice already available in cache) that this method and StatisticsGatheringRequestsRegistryService.getAll() is called BEFORE filters register their statistics definitions.
+            // That is why we loop over getting (non-empty) statistics definitions.
+            // This is ugly hack, but not fixing in more correct way not to complicate the design (communication protocol between StatisticsGatheringRequestsRegistryService writers and readers would be needed).
+            // This whole problem will go away when we change the design so that filterable properties definitions (particular filter definitions) are not stored in filter directive, but are sent from filterService client (stored not in directive view, but in model).
+            var fetchStatisticsLoop = $interval(function () {
+                var requestedStatisticsDescriptions = StatisticsGatheringRequestsRegistryService.getAll(that.creatorId);
+                if (requestedStatisticsDescriptions.length === 0) {
+                    return;
                 }
-                // WARN: dom element values filter directives must already register their statistics definitions, before this updateFiltersState is first called.
-                // Normally it is not a problem as model objects are fetched from web service and similar.
-                // This is deficiency, but not fixing now not to complicate the design
-                var requestedStatisticsDescriptions = StatisticsGatheringRequestsRegistryService.getAll();
                 var statisticsCalculator = new StatisticsCalculator(requestedStatisticsDescriptions, modelObjectAccessors);
 
-                var statistics = statisticsCalculator.getCurrentValuesBounds(modelObjectsArray);
-                StatisticsBroadcastingService.statistics = statistics;
+                StatisticsBroadcastingService.statistics[that.creatorId] = statisticsCalculator.getCurrentValuesBounds(modelObjectsArray);
                 StatisticsBroadcastingService.broadcast();
+                $interval.cancel(fetchStatisticsLoop);
+            }, 10);
+        };
+
+        this.destroy = function () {
+            FilteringCriteriaChangedNotificationService.clearAllListeners(that.creatorId);
+        }
+
+    };
+});
+
+define('filterServiceFactory.srv',[
+    'FilterService'
+    ],
+    function (
+    FilterService
+    ) {
+        'use strict';
+
+    return function FilterServiceFactory(
+        FilteringCriteriaChangedNotificationService,
+        StatisticsGatheringRequestsRegistryService,
+        StatisticsBroadcastingService,
+        $interval
+    ) {
+
+        return {
+            newInstance: function (creatorId) {
+                return new FilterService(FilteringCriteriaChangedNotificationService,
+                    StatisticsGatheringRequestsRegistryService,
+                    StatisticsBroadcastingService,
+                    $interval,
+                    creatorId);
             }
         };
 
@@ -29621,14 +29714,14 @@ define('WidgetsFilterPanel.mod',[
     'filterPanel/filterPanel.mod',
     'messaging/messaging.mod',
     'commonDisplayFilters/commonDisplayFilters.mod',
-    'filterService.srv'
+    'filterServiceFactory.srv'
 ], function (
     angular,
     TemplatesModule,
     FilterPanelModule,
     MessagingModule,
     CommonDisplayFiltersModule,
-    FilterService
+    filterServiceFactory
 ) {
     'use strict';
 
@@ -29638,11 +29731,12 @@ define('WidgetsFilterPanel.mod',[
         'WidgetsFilterPanel.filterPanel',
         'WidgetsFilterPanel.commonDisplayFilters'
     ])
-        .factory('filterService', [
+        .factory('filterServiceFactory', [
             'FilteringCriteriaChangedNotificationService',
             'StatisticsGatheringRequestsRegistryService',
             'StatisticsBroadcastingService',
-            FilterService
+            '$interval',
+            filterServiceFactory
         ])
 });
 require.config({
