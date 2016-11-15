@@ -3,12 +3,11 @@ define([],
         'use strict';
 
         return function StatisticsBroadcastingService($rootScope, statisticsUpdateNotification) {
-            var service = {
-                statistics: undefined,
+            return {
+                statistics: {},
                 broadcast: function () {
                     $rootScope.$broadcast(statisticsUpdateNotification);
                 }
             };
-            return service;
         };
     });

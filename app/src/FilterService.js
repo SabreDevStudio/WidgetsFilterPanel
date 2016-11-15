@@ -47,8 +47,7 @@ define([
                 }
                 var statisticsCalculator = new StatisticsCalculator(requestedStatisticsDescriptions, modelObjectAccessors);
 
-                var statistics = statisticsCalculator.getCurrentValuesBounds(modelObjectsArray);
-                StatisticsBroadcastingService.statistics = statistics;
+                StatisticsBroadcastingService.statistics[that.creatorId] = statisticsCalculator.getCurrentValuesBounds(modelObjectsArray);
                 StatisticsBroadcastingService.broadcast();
                 $interval.cancel(fetchStatisticsLoop);
             }, 10);

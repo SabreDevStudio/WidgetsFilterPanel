@@ -77,7 +77,10 @@ define([
 
                 scope.$on(statisticsUpdateNotification, function () {
                     filtersPanelController.notifyOnStatisticsUpdate();
-                    var statistics = StatisticsBroadcastingService.statistics;
+                    var statistics = StatisticsBroadcastingService.statistics[filtersPanelController.getOwnerId()];
+                    if(_.isUndefined(statistics)){
+                        return;
+                    }
                     scope.filterInstance.applyStatistics(statistics);
                     // need to kick angular as in values filter view we are ngShow on AbstractFilter.filterInitialized. Angular does not see change in this boolean value.
                     scope.$evalAsync();
