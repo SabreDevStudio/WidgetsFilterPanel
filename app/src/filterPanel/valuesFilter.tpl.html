@@ -13,8 +13,8 @@
 
             <div ng-if="filterType === 'discrete' || filterType === 'discreteListAllRequired' || filterType === 'discreteListAnyRequired'">
                 <div class="checkbox" ng-repeat="i in filterInstance.selectableValues">
-                    <label class="SDSDiscreteFilterValueLabel" for="{{::i.filterablePropertyName}}_{{i.propertyValue}}">
-                        <input type="checkbox" id="{{::i.filterablePropertyName}}_{{i.propertyValue}}" checked="checked" ng-model="i.permitted" ng-change="permittedValuesChanged()">
+                    <label class="SDSDiscreteFilterValueLabel" for="{{filterPanelId}}_{{::filterInstance.filterablePropertyName}}_{{i.propertyValue}}">
+                        <input type="checkbox" id="{{filterPanelId}}_{{::filterInstance.filterablePropertyName}}_{{i.propertyValue}}" checked="checked" ng-model="i.permitted" ng-change="permittedValuesChanged()">
                             <span>{{i.propertyValue | applyFilter:valuesDisplayFilter:valuesDisplayFilterOptions}} ({{i.count}})</span>
                         <span class="pull-right" ng-hide="hidePriceFrom">{{i.minPrice | applyFilter:currencyFilter:i.currency:0}}</span>
                     </label>
@@ -23,8 +23,9 @@
 
             <div ng-if="filterType === 'boolean'">
                 <div class="checkbox">
-                    <label for="{{::filterInstance.filterablePropertyName}}">
-                        <input type="checkbox" id="{{::filterInstance.filterablePropertyName}}" ng-checked="filterInstance.isRequired" ng-model="filterInstance.isRequired" ng-change="permittedValuesChanged()">
+                    <label for="{{filterPanelId}}_{{::filterInstance.filterablePropertyName}}">
+                        <input type="checkbox" id="{{filterPanelId}}_{{::filterInstance.filterablePropertyName}}"
+                               ng-checked="filterInstance.isRequired" ng-model="filterInstance.isRequired" ng-change="permittedValuesChanged()">
                         {{::filterInstance.label}}
                     </label>
                 </div>

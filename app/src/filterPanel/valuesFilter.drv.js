@@ -38,6 +38,7 @@ define([
                   canFilterOnlyOnMaxValue: '@'
                 , canFilterOnlyOnMinValue: '@'
                 , filterType: '@type'
+                , filterPanelId: '@?'
             },
             templateUrl: '../app/src/filterPanel/valuesFilter.tpl.html',
             link: function(scope, element, attrs, filtersPanelController) {
