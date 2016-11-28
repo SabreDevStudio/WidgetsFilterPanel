@@ -49,6 +49,7 @@
                     </span>
                 </span>
                 <div ng-if="filterType === 'range' || filterType === 'rangeDateTime'"
+                     id="{{filterPanelId}}_{{::filterInstance.filterablePropertyName}}"
                      range-slider
                      min="filterInstance.minConstraint" max="filterInstance.maxConstraint"
                      model-min="filterInstance.min" model-max="filterInstance.max"
@@ -56,6 +57,7 @@
                      filter="{{valuesDisplayFilter}}" filter-options="{{valuesDisplayFilterOptions}}"
                      on-handle-up="permittedValuesChanged()"></div>
                 <div ng-if="filterType === 'rangeMonetaryAmount'"
+                     id="{{filterPanelId}}_{{::filterInstance.filterablePropertyName}}"
                      range-slider
                      min="filterInstance.minConstraint.amount" max="filterInstance.maxConstraint.amount"
                      model-min="filterInstance.min.amount" model-max="filterInstance.max.amount"
