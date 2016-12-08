@@ -28,10 +28,8 @@ define([
             var unixMilliSecondsMin = statistics.min.unix() * 1000; // in milliseconds since start of epoch
             var unixMilliSecondsMax = statistics.max.unix() * 1000; // in milliseconds since start of epoch
 
-            if (_.isUndefined(this.minConstraint) && _.isUndefined(this.maxConstraint)) {
-                this.minConstraint = unixMilliSecondsMin;
-                this.maxConstraint = unixMilliSecondsMax;
-            }
+            this.minConstraint = unixMilliSecondsMin;
+            this.maxConstraint = unixMilliSecondsMax;
             this.min = unixMilliSecondsMin;
             this.max = unixMilliSecondsMax;
         };
