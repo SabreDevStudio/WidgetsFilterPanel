@@ -1,6 +1,5 @@
 define([
         'angular',
-        'angular_bootstrap',
         'angular_rangeslider',
         'messaging/messaging.mod',
         'filterPanel/filterPanel.ctr',
@@ -10,7 +9,6 @@ define([
     ],
     function (
         angular,
-        angular_bootstrap,
         angular_rangeslider,
         MessagingModule,
         FiltersPanelCtrl,

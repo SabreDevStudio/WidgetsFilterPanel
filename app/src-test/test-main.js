@@ -25,9 +25,6 @@ requirejs.config({
         'angular': {
             exports: 'angular'
         },
-        angular_bootstrap: {
-            deps: ['angular']
-        },
         'angular_rangeslider': {
             deps: ['angular']
         }
