@@ -30,7 +30,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "1.5.x",
+    "angular": "1.6.x",
     "lodash": "4.14.x",
     "angular-rangeslider": "https://github.com/aug-riedinger/angular-rangeslider.git#ba85edf3ee77977d05a94fb1137ccbbb35349a2f",
     "bootstrap": "~3.3.5",
@@ -38,6 +38,6 @@
     "moment": "~2.14.1"
   },
   "resolutions": {
-    "angular": "1.5.x"
+    "angular": "1.6.x"
   }
 }
