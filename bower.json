@@ -32,7 +32,7 @@
   "dependencies": {
     "angular": "1.6.x",
     "lodash": "4.14.x",
-    "angular-rangeslider": "https://SG0301761@git.sabre.com/scm/smp/angular-range-slider.git",
+    "angular-rangeslider": "https://SG0301761@git.sabre.com/scm/smp/angular-range-slider.git#3fccfe15c24ee983329ad861f2e52e94c1e887a4",
     "bootstrap": "~3.3.5",
     "css-element-queries": "https://github.com/TomekSzymanski/css-element-queries.git#ae9109f3014d53a06c467621e18192e151bd483f",
     "moment": "~2.14.1"
