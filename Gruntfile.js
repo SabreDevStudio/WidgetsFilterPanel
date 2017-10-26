@@ -23,17 +23,16 @@ module.exports = function (grunt) {
       }
     },
 
-    compass: {
+    sass: {
+      options: {
+          sourceMap: true
+      },
       dist: {
-        options: {
-          sassDir: 'app/styles',
-          cssDir: 'tmp/styles',
-          imagesDir: 'img',
-          javascriptsDir: 'app',
-          sourcemap: true
-        }
+          files: {
+              'tmp/styles/WidgetsFilterPanel.css': 'app/styles/WidgetsFilterPanel.scss'
+          }
       }
-    },
+  },
 
     cssmin: {
       options: {
@@ -51,9 +50,9 @@ module.exports = function (grunt) {
     },
 
     watch: {
-      compass: {
-        files: ['widgets/style/*.scss'],
-        tasks: ['compass'],
+      sass: {
+        files: ['app/styles/*.scss'],
+        tasks: ['sass'],
         options: {
           spawn: false
         }
@@ -177,7 +176,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('sources-pipeline', ['jshint', 'ngtemplates']);
 
-  grunt.registerTask('css-pipeline', ['compass', 'cssmin:cssbundle']);
+  grunt.registerTask('css-pipeline', ['sass', 'cssmin:cssbundle']);
 
   grunt.registerTask('static-resources', ['copy:bootstrap_glyphicons_fonts']);
 
